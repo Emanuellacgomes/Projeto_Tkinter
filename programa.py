@@ -8,16 +8,19 @@ programa.configure(background="#87cbff")
 ####### Programa - Botões e Lógica #######
 programa.frame_1 = Frame(bd = 3, bg = "#47ff72")
 
-programa.frame_1.place(relx = 0.02 ,rely = 0.02 ,relheight = 0.96 ,relwidth = 0.46)
+programa.frame_1.place(relx = 0.01 ,rely = 0.02 ,relheight = 0.96 ,relwidth = 0.98)
 
-programa.frame_2 = Frame(bd = 3, bg = "#e6ff99" )
+programa.botao_cadastrar = Button(text="Cadastrar")
+programa.botao_cadastrar.place(relx= 0.35, rely=0.05, relheight = 0.09, relwidth = 0.30)
 
-programa.frame_2.place(relx = 0.50, rely = 0.02, relheight = 0.96, relwidth = 0.48)
+programa.botao_pesquisar = Button(text="Pesquisar")
+programa.botao_pesquisar.place(relx= 0.35, rely=0.30, relheight = 0.09, relwidth = 0.30)
 
-programa.botao_entrar = Button(programa.frame_1,text="Entrar")
-programa.botao_entrar.place()
+programa.botao_alterar = Button(text="Alterar")
+programa.botao_alterar.place(relx= 0.35, rely=0.55, relheight = 0.09, relwidth = 0.30)
 
-programa.botao_sair = Button(programa.frame_2,text="Sair")
-programa.botao_sair.place()
+programa.botao_excluir = Button(text="Excluir")
+programa.botao_excluir.place(relx= 0.35, rely=0.80, relheight = 0.09, relwidth = 0.30)
+
 
 programa.mainloop()
