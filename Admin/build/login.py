@@ -3,9 +3,9 @@
 from pathlib import Path
 from tkinter import Tk, Canvas, Button, PhotoImage,Toplevel
 import admin  # Importa o módulo admin
-
+import cadastrar
 OUTPUT_PATH = Path(__file__).parent
-ASSETS_PATH = OUTPUT_PATH / Path(r"C:\Users\Emanuel\Documents\GitHub\Projeto_Tkinter\Admin\build\assets_login\frame0")
+ASSETS_PATH = OUTPUT_PATH / Path(r"C:\Users\Emanuel\Documents\GitHub\Projeto_Tkinter\Admin\build\assets_login\frame0") #altere se estiver usando em outro computador
 
 
 def relative_to_assets(path: str) -> Path:
@@ -15,13 +15,12 @@ def relative_to_assets(path: str) -> Path:
 def abrir_janela_admin():
     admin.create_admin_window(Toplevel(window))
 
-
 window = Tk()
 window.title("Gerenciamento de Imovéis - Login")
 window.geometry("1544x1024")
 window.configure(bg = "#FFFFFF")
 window.state("zoomed")
-window.iconbitmap(r"C:\Users\Emanuel\Documents\GitHub\Projeto_Tkinter\Admin\build\OIP.ico")
+window.iconbitmap(r"C:\Users\Emanuel\Documents\GitHub\Projeto_Tkinter\Admin\build\OIP.ico") #altere se estiver usando em outro computador
 
 canvas = Canvas(
     window,

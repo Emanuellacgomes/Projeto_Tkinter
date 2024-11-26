@@ -1,7 +1,6 @@
-# admin.py
-
 from pathlib import Path
-from tkinter import Canvas, Button, PhotoImage, Toplevel
+from tkinter import Tk, Canvas, Button, PhotoImage, Toplevel
+import cadastrar
 
 # Variáveis globais para manter referências às imagens
 global button_image_1, button_image_2, button_image_3, button_image_4, button_image_5
@@ -14,13 +13,16 @@ def relative_to_assets(path: str) -> Path:
 
 def create_admin_window(janela):
     global button_image_1, button_image_2, button_image_3, button_image_4, button_image_5
-    
+
     janela.geometry("1531x850")
     janela.configure(bg="#6D88FF")
-    janela.title("Gerenciamento de Imovéis - Painel Admin")
+    janela.title("Gerenciamento de Imóveis - Painel Admin")
     janela.state("zoomed")
-    janela.iconbitmap(r"C:\Users\Emanuel\Documents\GitHub\Projeto_Tkinter\Admin\build\OIP.ico") #altere se vc estiver usando em outro computador
-
+    janela.iconbitmap(r"C:\Users\Emanuel\Documents\GitHub\Projeto_Tkinter\Admin\build\OIP.ico") # Altere se estiver usando em outro computador
+        
+    def abrir_janela_cadastrar():
+        cadastrar.create_cadastrar_window(Toplevel(janela))
+        
     canvas = Canvas(
         janela,
         bg="#6D88FF",
@@ -120,7 +122,7 @@ def create_admin_window(janela):
         image=button_image_2,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: print("button_2 clicked"),
+        command=abrir_janela_cadastrar,  # Corrigido para chamar a função
         relief="flat"
     )
     button_2.place(
@@ -212,3 +214,8 @@ def create_admin_window(janela):
     )
 
     janela.resizable(False, False)
+
+if __name__ == "__main__":
+    root = Tk()
+    create_admin_window(root)
+    root.mainloop()
