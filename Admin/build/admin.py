@@ -29,8 +29,8 @@ def create_admin_window(janela):
 
     # Adicionar menu "Ajuda"
     menu_ajuda = Menu(barramenu, tearoff=0)
-    barramenu.add_cascade(label="Ajuda", menu=menu_ajuda)
-    menu_ajuda.add_command(label="Sobre", command=sobre)
+    barramenu.add_cascade(label="Sobre", menu=menu_ajuda)
+    menu_ajuda.add_command(label="Programa", command=sobre)
 
     janela.geometry("1531x850")
     janela.configure(bg="#6D88FF")

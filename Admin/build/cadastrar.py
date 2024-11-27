@@ -1,6 +1,5 @@
 from pathlib import Path
 from tkinter import Canvas, Text, Button, PhotoImage, Toplevel, StringVar, Entry, messagebox
-from tkinter.ttk import Combobox
 import mysql.connector
 
 OUTPUT_PATH = Path(__file__).parent
@@ -146,7 +145,7 @@ def create_cadastrar_window(window):
         180.0,
         550.0,
         anchor="nw",
-        text="Disponibilidade:",
+        text="Estoque:",
         fill="#000000",
         font=("Itim Regular", 31 * -1)
     )
@@ -180,37 +179,29 @@ def create_cadastrar_window(window):
         height=103.0
     )
 
-    canvas.create_rectangle(
-        401.0,
-        519.0,
-        1542.0,
-        624.0,
-        fill="#8F8AC0",
-        outline=""
+    entry_estoque = Entry(
+        window,
+        bd=0,
+        bg="#8F8AC0",
+        fg="#000716",
+        font=("Arial", 30),
+        highlightthickness=0,
+        validate="key",
+        validatecommand=(validate_command, '%S')
     )
-
-    # Adicionando um Combobox como um select do HTML
-    options = ["Disponível", "Indisponível", "Reservado"]
-    selected_option = StringVar(window)
-    selected_option.set("Selecione")  # Valor padrão
-
-    combobox = Combobox(window, textvariable=selected_option, values=options, font=("Arial", 24), state="readonly")
-    combobox.place(
+    entry_estoque.place(
         x=401.0,
         y=519.0,
         width=1141.0,
         height=103.0
     )
 
-    # Centralizar verticalmente
-    combobox.option_add("*TCombobox*Listbox*Font", ("Arial", 30))
-
     def save_to_db():
         id_value = entry_1.get()
         nome_imovel = entry_2.get("1.0", "end-1c")
-        disponibilidade = selected_option.get()
+        estoque = entry_estoque.get()
         
-        if id_value and nome_imovel and disponibilidade != "Selecione":
+        if id_value and nome_imovel and estoque:
             try:
                 db_connection = mysql.connector.connect(
                     host="127.0.0.1",
@@ -220,8 +211,8 @@ def create_cadastrar_window(window):
                 )
                 cursor = db_connection.cursor()
 
-                insert_query = "INSERT INTO dados (id, nome, disponibilidade) VALUES (%s, %s, %s)"
-                cursor.execute(insert_query, (id_value, nome_imovel, disponibilidade))
+                insert_query = "INSERT INTO dados (id, nome, estoque) VALUES (%s, %s, %s)"
+                cursor.execute(insert_query, (id_value, nome_imovel, estoque))
 
                 db_connection.commit()
                 cursor.close()

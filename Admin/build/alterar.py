@@ -1,6 +1,5 @@
 from pathlib import Path
-from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, StringVar, messagebox
-from tkinter.ttk import Combobox
+from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, messagebox
 import mysql.connector
 
 OUTPUT_PATH = Path(__file__).parent
@@ -159,42 +158,42 @@ def create_alterar_window(window):
         171.0,
         455.0,
         anchor="nw",
-        text="Alterar Disponibilidade:",
+        text="Alterar Estoque:",
         fill="#000000",
         font=("Itim Regular", 23 * -1)
     )
 
-    canvas.create_rectangle(
-        401.0,
-        420.0,
-        1542.0,
-        525.0,
-        fill="#8F8AC0",
-        outline=""
+    entry_image_3 = PhotoImage(
+        file=relative_to_assets("entry_2.png"))
+    entry_bg_3 = canvas.create_image(
+        971.5,
+        472.5,
+        image=entry_image_3
     )
 
-    # Adicionando um Combobox como um select do HTML
-    options = ["Disponível", "Indisponível", "Reservado"]
-    selected_option = StringVar(window)
-    selected_option.set("Selecione")  # Valor padrão
-
-    combobox = Combobox(window, textvariable=selected_option, values=options, font=("Arial", 24), state="readonly")
-    combobox.place(
+    entry_estoque = Entry(
+        window,
+        bd=0,
+        bg="#8F8AC0",
+        fg="#000716",
+        font=("Arial", 30),
+        highlightthickness=0,
+        validate="key",
+        validatecommand=(validate_command, '%S')
+    )
+    entry_estoque.place(
         x=401.0,
         y=420.0,
         width=1141.0,
         height=103.0
     )
 
-    # Centralizar verticalmente
-    combobox.option_add("*TCombobox*Listbox*Font", ("Arial", 30))
-
     def update_db():
         id_value = entry_1.get()
         novo_nome = entry_2.get("1.0", "end-1c")
-        nova_disponibilidade = selected_option.get()
+        novo_estoque = entry_estoque.get()
 
-        if id_value and (novo_nome or nova_disponibilidade != "Selecione"):
+        if id_value and (novo_nome or novo_estoque):
             try:
                 db_connection = mysql.connector.connect(
                     host="127.0.0.1",
@@ -211,8 +210,8 @@ def create_alterar_window(window):
 
                 if result:
                     # Se o ID existir, atualize o registro
-                    update_query = "UPDATE dados SET nome = %s, disponibilidade = %s WHERE id = %s"
-                    cursor.execute(update_query, (novo_nome, nova_disponibilidade, id_value))
+                    update_query = "UPDATE dados SET nome = %s, estoque = %s WHERE id = %s"
+                    cursor.execute(update_query, (novo_nome, novo_estoque, id_value))
                     db_connection.commit()
                     messagebox.showinfo("Sucesso", "Dados alterados com sucesso!")
                 else:

@@ -127,7 +127,7 @@ def create_excluir_window(window):
                     delete_query = "DELETE FROM dados WHERE id = %s"
                     cursor.execute(delete_query, (id_value,))
                     db_connection.commit()
-                    messagebox.showinfo("Sucesso", "Imóvel excluído com sucesso!")
+                    messagebox.showinfo("Sucesso", "Produto excluído com sucesso!")
                 else:
                     messagebox.showwarning("Atenção", "ID não encontrado no banco de dados.")
 

@@ -177,7 +177,7 @@ def create_pesquisar_window(window):
         897.0,
         335.0,
         anchor="nw",
-        text="DISPONIBILIDADE:",
+        text="ESTOQUE:",
         fill="#000000",
         font=("Itim Regular", 36 * -1)
     )
