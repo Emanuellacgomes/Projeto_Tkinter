@@ -1,36 +1,23 @@
 from pathlib import Path
-
-# from tkinter import *
-# Explicit imports to satisfy Flake8
-from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
-global button_image_1, button_image_2, button_image_3, button_image_4
+from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, StringVar
+from tkinter.ttk import Combobox
 
 OUTPUT_PATH = Path(__file__).parent
-ASSETS_PATH = OUTPUT_PATH / Path(r"C:\Users\Emanuel\Documents\GitHub\Projeto_Tkinter\Admin\build\assets_cadastrar\frame0")
-
-
+ASSETS_PATH = OUTPUT_PATH / Path(r"C:\Users\Emanuel\Documents\GitHub\Projeto_Tkinter\Admin\build\assets_alterar\frame0")
+global button_image_1, button_image_2, button_image_3, button_image_4
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
-caminho_button_1 = relative_to_assets(r"C:\Users\Emanuel\Documents\GitHub\Projeto_Tkinter\Admin\build\assets_cadastrar\frame0\button_1.png")
-caminho_button_2 = relative_to_assets(r"C:\Users\Emanuel\Documents\GitHub\Projeto_Tkinter\Admin\build\assets_cadastrar\frame0\button_2.png")
-caminho_button_3 = relative_to_assets(r"C:\Users\Emanuel\Documents\GitHub\Projeto_Tkinter\Admin\build\assets_cadastrar\frame0\entry_1.png")
-caminho_button_4 = relative_to_assets(r"C:\Users\Emanuel\Documents\GitHub\Projeto_Tkinter\Admin\build\assets_cadastrar\frame0\entry_2.png")
 
-# Mantenha uma referência às imagens para evitar coleta de lixo
-button_image_1 = PhotoImage(file=caminho_button_1)
-button_image_2 = PhotoImage(file=caminho_button_2)
-button_image_3 = PhotoImage(file=caminho_button_3)
-button_image_4 = PhotoImage(file=caminho_button_4)
+def only_numbers(char):
+    return char.isdigit()
 
-
-
-def create_cadastrar_window(window):
+def create_alterar_window(window):
+    global button_image_1, button_image_2, button_image_3, button_image_4
     window.geometry("1542x850")
     window.configure(bg = "#FFFFFF")
     window.state("zoomed")
-    window.title("Gerenciamento de Imovéis - Cadastrar")
     window.iconbitmap(r"C:\Users\Emanuel\Documents\GitHub\Projeto_Tkinter\Admin\build\OIP.ico")
-
+    
     canvas = Canvas(
         window,
         bg = "#FFFFFF",
@@ -52,14 +39,6 @@ def create_cadastrar_window(window):
 
     canvas.create_rectangle(
         0.0,
-        121.0,
-        171.0,
-        850.0,
-        fill="#C1C6DF",
-        outline="")
-
-    canvas.create_rectangle(
-        0.0,
         0.0,
         1542.0,
         121.0,
@@ -68,12 +47,20 @@ def create_cadastrar_window(window):
 
     canvas.create_text(
         56.0,
-        25.0,
+        0.0,
         anchor="nw",
-        text="CADASTRAR:",
+        text="ALTERAR:",
         fill="#000000",
         font=("Itim Regular", 64 * -1)
     )
+
+    canvas.create_rectangle(
+        0.0,
+        121.0,
+        171.0,
+        850.0,
+        fill="#C1C6DF",
+        outline="")
 
     canvas.create_rectangle(
         171.0,
@@ -84,25 +71,33 @@ def create_cadastrar_window(window):
         outline="")
 
     canvas.create_text(
-        175.0,
-        141.0,
+        195.0,
+        151.0,
         anchor="nw",
         text="Insira o ID:",
         fill="#000000",
-        font=("Itim Regular", 48 * -1)
+        font=("Itim Regular", 36 * -1)
     )
 
-    entry_image_1 = PhotoImage(("entry_1.png"))
+    entry_image_1 = PhotoImage(
+        file=relative_to_assets("entry_1.png"))
     entry_bg_1 = canvas.create_image(
         971.5,
         173.5,
-        image=button_image_3
+        image=entry_image_1
     )
-    entry_1 = Text(
+
+    validate_command = window.register(only_numbers)
+
+    entry_1 = Entry(
+        window,
         bd=0,
         bg="#8F8AC0",
         fg="#000716",
-        highlightthickness=0
+        font=("Arial", 30),
+        highlightthickness=0,
+        validate="key",
+        validatecommand=(validate_command, '%S')
     )
     entry_1.place(
         x=401.0,
@@ -111,71 +106,92 @@ def create_cadastrar_window(window):
         height=103.0
     )
 
-    canvas.create_rectangle(
-        171.0,
-        519.0,
-        401.0,
-        624.0,
-        fill="#A09AD4",
-        outline="")
 
     canvas.create_rectangle(
         171.0,
-        320.0,
+        270.0,
         401.0,
-        425.0,
+        375.0,
         fill="#A09AD4",
         outline="")
 
     canvas.create_text(
-        180.0,
-        550.0,
-        anchor="nw",
-        text="Disponibilidade:",
-        fill="#000000",
-        font=("Itim Regular", 31 * -1)
-    )
-
-    canvas.create_text(
         171.0,
-        355.0,
+        305.0,
         anchor="nw",
-        text="Nome do Imóvel:\n",
+        text="Novo Nome do Imóvel:",
         fill="#000000",
-        font=("Itim Regular", 31 * -1)
+        font=("Itim Regular", 23 * -1)
     )
 
     entry_image_2 = PhotoImage(
         file=relative_to_assets("entry_2.png"))
     entry_bg_2 = canvas.create_image(
         971.5,
-        372.5,
+        320.5,
         image=entry_image_2
     )
     entry_2 = Text(
+        window,
         bd=0,
         bg="#8F8AC0",
         fg="#000716",
+        font=("Arial", 30),
         highlightthickness=0
     )
     entry_2.place(
         x=401.0,
-        y=320.0,
+        y=270.0,
         width=1141.0,
         height=103.0
     )
 
     canvas.create_rectangle(
+        171.0,
+        420.0,
         401.0,
-        519.0,
-        1542.0,
-        624.0,
-        fill="#8F8AC0",
+        525.0,
+        fill="#A09AD4",
         outline="")
+
+    canvas.create_text(
+        171.0,
+        455.0,
+        anchor="nw",
+        text="Alterar Disponibilidade:",
+        fill="#000000",
+        font=("Itim Regular", 23 * -1)
+    )
+
+    canvas.create_rectangle(
+        401.0,
+        420.0,
+        1542.0,
+        525.0,
+        fill="#8F8AC0",
+        outline=""
+    )
+
+    # Adicionando um Combobox como um select do HTML
+    options = ["Disponível", "Indisponível", "Reservado"]
+    selected_option = StringVar(window)
+    selected_option.set("Selecione")  # Valor padrão
+
+    combobox = Combobox(window, textvariable=selected_option, values=options, font=("Arial", 24), state="readonly")
+    combobox.place(
+        x=401.0,
+        y=420.0,
+        width=1141.0,
+        height=103.0
+    )
+
+    # Centralizar verticalmente
+    combobox.option_add("*TCombobox*Listbox*Font", ("Arial", 30))
 
     button_image_1 = PhotoImage(
         file=relative_to_assets("button_1.png"))
     button_1 = Button(
+        window,
         image=button_image_1,
         borderwidth=0,
         highlightthickness=0,
@@ -192,6 +208,7 @@ def create_cadastrar_window(window):
     button_image_2 = PhotoImage(
         file=relative_to_assets("button_2.png"))
     button_2 = Button(
+        window,
         image=button_image_2,
         borderwidth=0,
         highlightthickness=0,
@@ -204,5 +221,6 @@ def create_cadastrar_window(window):
         width=338.0,
         height=103.0
     )
+
     window.resizable(False, False)
     window.mainloop()

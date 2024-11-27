@@ -1,7 +1,8 @@
 from pathlib import Path
 from tkinter import Tk, Canvas, Button, PhotoImage, Toplevel
 import cadastrar
-
+import alterar
+import excluir
 # Variáveis globais para manter referências às imagens
 global button_image_1, button_image_2, button_image_3, button_image_4, button_image_5
 
@@ -22,7 +23,10 @@ def create_admin_window(janela):
         
     def abrir_janela_cadastrar():
         cadastrar.create_cadastrar_window(Toplevel(janela))
-        
+    def abrir_janela_alterar():
+        alterar.create_alterar_window(Toplevel(janela))
+    def abrir_janela_excluir():
+        excluir.create_excluir_window(Toplevel(janela))
     canvas = Canvas(
         janela,
         bg="#6D88FF",
@@ -107,7 +111,7 @@ def create_admin_window(janela):
         image=button_image_1,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: print("button_1 clicked"),
+        command=abrir_janela_alterar,
         relief="flat"
     )
     button_1.place(
@@ -155,7 +159,7 @@ def create_admin_window(janela):
         image=button_image_3,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: print("button_3 clicked"),
+        command=abrir_janela_excluir,
         relief="flat"
     )
     button_3.place(
