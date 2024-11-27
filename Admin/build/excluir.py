@@ -1,5 +1,6 @@
 from pathlib import Path
-from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
+from tkinter import Tk, Canvas, Entry, Button, PhotoImage, messagebox
+import mysql.connector
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path(r"C:\Users\Emanuel\Documents\GitHub\Projeto_Tkinter\Admin\build\assets_excluir\frame0")
@@ -103,6 +104,41 @@ def create_excluir_window(window):
         height=103.0
     )
 
+    def delete_from_db():
+        id_value = entry_1.get()
+        
+        if id_value:
+            try:
+                db_connection = mysql.connector.connect(
+                    host="127.0.0.1",
+                    user="root",
+                    password="nova_senha",  # Substitua por sua senha real
+                    database="imobiliaria"
+                )
+                cursor = db_connection.cursor()
+
+                # Verifique se o ID existe
+                select_query = "SELECT * FROM dados WHERE id = %s"
+                cursor.execute(select_query, (id_value,))
+                result = cursor.fetchone()
+
+                if result:
+                    # Se o ID existir, exclua o registro
+                    delete_query = "DELETE FROM dados WHERE id = %s"
+                    cursor.execute(delete_query, (id_value,))
+                    db_connection.commit()
+                    messagebox.showinfo("Sucesso", "Imóvel excluído com sucesso!")
+                else:
+                    messagebox.showwarning("Atenção", "ID não encontrado no banco de dados.")
+
+                cursor.close()
+                db_connection.close()
+                
+            except mysql.connector.Error as err:
+                messagebox.showerror("Erro", f"Erro ao excluir do banco de dados: {err}")
+        else:
+            messagebox.showwarning("Atenção", "Por favor, insira um ID válido.")
+
     button_image_1 = PhotoImage(
         file=relative_to_assets("button_1.png"))
     button_1 = Button(
@@ -110,7 +146,7 @@ def create_excluir_window(window):
         image=button_image_1,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: print("button_1 clicked"),
+        command=delete_from_db,
         relief="flat"
     )
     button_1.place(

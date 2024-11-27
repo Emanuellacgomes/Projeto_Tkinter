@@ -1,8 +1,9 @@
 from pathlib import Path
-from tkinter import Tk, Canvas, Button, PhotoImage, Toplevel
+from tkinter import Tk, Canvas, Button, PhotoImage, Toplevel, Menu, messagebox
 import cadastrar
 import alterar
 import excluir
+import pesquisar
 # Variáveis globais para manter referências às imagens
 global button_image_1, button_image_2, button_image_3, button_image_4, button_image_5
 
@@ -15,18 +16,39 @@ def relative_to_assets(path: str) -> Path:
 def create_admin_window(janela):
     global button_image_1, button_image_2, button_image_3, button_image_4, button_image_5
 
+    def sobre():
+        messagebox.showinfo("Sobre", "Código criado e testado por Emanuel de Lacerda Gomes!")
+    def sair():
+        var_sair = messagebox.askyesno("Sair","Tem certeza que quer encerrar o programa?")
+        if var_sair == True:
+            janela.destroy()
+
+    # Criar a barra de menu
+    barramenu = Menu(janela)
+    janela.config(menu=barramenu)
+
+    # Adicionar menu "Ajuda"
+    menu_ajuda = Menu(barramenu, tearoff=0)
+    barramenu.add_cascade(label="Ajuda", menu=menu_ajuda)
+    menu_ajuda.add_command(label="Sobre", command=sobre)
+
     janela.geometry("1531x850")
     janela.configure(bg="#6D88FF")
     janela.title("Gerenciamento de Imóveis - Painel Admin")
     janela.state("zoomed")
     janela.iconbitmap(r"C:\Users\Emanuel\Documents\GitHub\Projeto_Tkinter\Admin\build\OIP.ico") # Altere se estiver usando em outro computador
-        
+    
     def abrir_janela_cadastrar():
         cadastrar.create_cadastrar_window(Toplevel(janela))
+
     def abrir_janela_alterar():
         alterar.create_alterar_window(Toplevel(janela))
+
     def abrir_janela_excluir():
         excluir.create_excluir_window(Toplevel(janela))
+    def abrir_janela_pesquisar():
+        pesquisar.create_pesquisar_window(Toplevel(janela))
+
     canvas = Canvas(
         janela,
         bg="#6D88FF",
@@ -192,7 +214,7 @@ def create_admin_window(janela):
         image=button_image_4,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: print("button_4 clicked"),
+        command=abrir_janela_pesquisar,
         relief="flat"
     )
     button_4.place(
@@ -207,7 +229,7 @@ def create_admin_window(janela):
         image=button_image_5,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: janela.destroy(),
+        command=sair,
         relief="flat"
     )
     button_5.place(

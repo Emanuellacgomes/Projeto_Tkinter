@@ -1,10 +1,12 @@
 from pathlib import Path
-from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, StringVar
+from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, StringVar, messagebox
 from tkinter.ttk import Combobox
+import mysql.connector
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path(r"C:\Users\Emanuel\Documents\GitHub\Projeto_Tkinter\Admin\build\assets_alterar\frame0")
 global button_image_1, button_image_2, button_image_3, button_image_4
+
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
@@ -106,7 +108,6 @@ def create_alterar_window(window):
         height=103.0
     )
 
-
     canvas.create_rectangle(
         171.0,
         270.0,
@@ -188,6 +189,43 @@ def create_alterar_window(window):
     # Centralizar verticalmente
     combobox.option_add("*TCombobox*Listbox*Font", ("Arial", 30))
 
+    def update_db():
+        id_value = entry_1.get()
+        novo_nome = entry_2.get("1.0", "end-1c")
+        nova_disponibilidade = selected_option.get()
+
+        if id_value and (novo_nome or nova_disponibilidade != "Selecione"):
+            try:
+                db_connection = mysql.connector.connect(
+                    host="127.0.0.1",
+                    user="root",
+                    password="nova_senha",  # Substitua por sua senha real
+                    database="imobiliaria"
+                )
+                cursor = db_connection.cursor()
+
+                # Verifique se o ID existe
+                select_query = "SELECT * FROM dados WHERE id = %s"
+                cursor.execute(select_query, (id_value,))
+                result = cursor.fetchone()
+
+                if result:
+                    # Se o ID existir, atualize o registro
+                    update_query = "UPDATE dados SET nome = %s, disponibilidade = %s WHERE id = %s"
+                    cursor.execute(update_query, (novo_nome, nova_disponibilidade, id_value))
+                    db_connection.commit()
+                    messagebox.showinfo("Sucesso", "Dados alterados com sucesso!")
+                else:
+                    messagebox.showwarning("Atenção", "ID não encontrado no banco de dados.")
+
+                cursor.close()
+                db_connection.close()
+                
+            except mysql.connector.Error as err:
+                messagebox.showerror("Erro", f"Erro ao atualizar no banco de dados: {err}")
+        else:
+            messagebox.showwarning("Atenção", "Por favor, preencha todos os campos.")
+
     button_image_1 = PhotoImage(
         file=relative_to_assets("button_1.png"))
     button_1 = Button(
@@ -195,7 +233,7 @@ def create_alterar_window(window):
         image=button_image_1,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: print("button_1 clicked"),
+        command=update_db,
         relief="flat"
     )
     button_1.place(

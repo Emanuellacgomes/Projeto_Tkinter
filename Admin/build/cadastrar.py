@@ -1,6 +1,7 @@
 from pathlib import Path
-from tkinter import Canvas, Text, Button, PhotoImage, Toplevel, StringVar, Entry
+from tkinter import Canvas, Text, Button, PhotoImage, Toplevel, StringVar, Entry, messagebox
 from tkinter.ttk import Combobox
+import mysql.connector
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path(r"C:\Users\Emanuel\Documents\GitHub\Projeto_Tkinter\Admin\build\assets_cadastrar\frame0")
@@ -188,12 +189,56 @@ def create_cadastrar_window(window):
         outline=""
     )
 
+    # Adicionando um Combobox como um select do HTML
+    options = ["Disponível", "Indisponível", "Reservado"]
+    selected_option = StringVar(window)
+    selected_option.set("Selecione")  # Valor padrão
+
+    combobox = Combobox(window, textvariable=selected_option, values=options, font=("Arial", 24), state="readonly")
+    combobox.place(
+        x=401.0,
+        y=519.0,
+        width=1141.0,
+        height=103.0
+    )
+
+    # Centralizar verticalmente
+    combobox.option_add("*TCombobox*Listbox*Font", ("Arial", 30))
+
+    def save_to_db():
+        id_value = entry_1.get()
+        nome_imovel = entry_2.get("1.0", "end-1c")
+        disponibilidade = selected_option.get()
+        
+        if id_value and nome_imovel and disponibilidade != "Selecione":
+            try:
+                db_connection = mysql.connector.connect(
+                    host="127.0.0.1",
+                    user="root",
+                    password="nova_senha",
+                    database="imobiliaria"
+                )
+                cursor = db_connection.cursor()
+
+                insert_query = "INSERT INTO dados (id, nome, disponibilidade) VALUES (%s, %s, %s)"
+                cursor.execute(insert_query, (id_value, nome_imovel, disponibilidade))
+
+                db_connection.commit()
+                cursor.close()
+                db_connection.close()
+
+                messagebox.showinfo("Sucesso", "Dados cadastrados com sucesso!")
+            except mysql.connector.Error as err:
+                messagebox.showerror("Erro", f"Erro ao salvar no banco de dados: {err}")
+        else:
+            messagebox.showwarning("Atenção", "Por favor, preencha todos os campos.")
+
     button_1 = Button(
         window,
         image=button_image_1,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: print("button_1 clicked"),
+        command=save_to_db,
         relief="flat"
     )
     button_1.place(
@@ -217,22 +262,6 @@ def create_cadastrar_window(window):
         width=338.0,
         height=103.0
     )
-
-    # Adicionando um Combobox como um select do HTML
-    options = ["Disponível", "Indisponível", "Reservado"]
-    selected_option = StringVar(window)
-    selected_option.set("Selecione")  # Valor padrão
-
-    combobox = Combobox(window, textvariable=selected_option, values=options, font=("Arial", 24), state="readonly")
-    combobox.place(
-        x=401.0,
-        y=519.0,
-        width=1141.0,
-        height=103.0
-    )
-
-    # Centralizar verticalmente
-    combobox.option_add("*TCombobox*Listbox*Font", ("Arial", 30))
 
     window.resizable(False, False)
     window.mainloop()
