@@ -1,0 +1,2 @@
+altere os caminhos das pastas antes de executar os arquivos
+cada arquivo possui uma pasta asset

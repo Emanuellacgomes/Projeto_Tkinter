@@ -3,7 +3,7 @@ from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, messagebox
 import mysql.connector
 
 OUTPUT_PATH = Path(__file__).parent
-ASSETS_PATH = OUTPUT_PATH / Path(r"C:\Users\Emanuel\Documents\GitHub\Projeto_Tkinter\Admin\build\assets_alterar\frame0")
+ASSETS_PATH = OUTPUT_PATH / Path(r"C:\Users\emanuel.20524\Documents\GitHub\Projeto_Tkinter\Admin\build\assets_alterar\frame0") #mude o usuario necessario
 global button_image_1, button_image_2, button_image_3, button_image_4
 
 def relative_to_assets(path: str) -> Path:
@@ -17,7 +17,8 @@ def create_alterar_window(window):
     window.geometry("1542x850")
     window.configure(bg = "#FFFFFF")
     window.state("zoomed")
-    window.iconbitmap(r"C:\Users\Emanuel\Documents\GitHub\Projeto_Tkinter\Admin\build\OIP.ico")
+    window.iconbitmap(r"C:\Users\emanuel.20524\Documents\GitHub\Projeto_Tkinter\Admin\build\OIP.ico") #mude o usuario necessario
+    window.title("Gerenciamento de Produtos - Alterar")
     
     canvas = Canvas(
         window,
@@ -119,7 +120,7 @@ def create_alterar_window(window):
         171.0,
         305.0,
         anchor="nw",
-        text="Novo Nome do Imóvel:",
+        text="Novo Nome do Produto:",
         fill="#000000",
         font=("Itim Regular", 23 * -1)
     )
@@ -195,13 +196,13 @@ def create_alterar_window(window):
 
         if id_value and (novo_nome or novo_estoque):
             try:
-                db_connection = mysql.connector.connect(
-                    host="127.0.0.1",
+                conexao_banco = mysql.connector.connect(
+                    host="localhost",
                     user="root",
-                    password="nova_senha",  # Substitua por sua senha real
+                    password="",
                     database="imobiliaria"
                 )
-                cursor = db_connection.cursor()
+                cursor = conexao_banco.cursor()
 
                 # Verifique se o ID existe
                 select_query = "SELECT * FROM dados WHERE id = %s"
@@ -212,13 +213,13 @@ def create_alterar_window(window):
                     # Se o ID existir, atualize o registro
                     update_query = "UPDATE dados SET nome = %s, estoque = %s WHERE id = %s"
                     cursor.execute(update_query, (novo_nome, novo_estoque, id_value))
-                    db_connection.commit()
+                    conexao_banco.commit()
                     messagebox.showinfo("Sucesso", "Dados alterados com sucesso!")
                 else:
                     messagebox.showwarning("Atenção", "ID não encontrado no banco de dados.")
 
                 cursor.close()
-                db_connection.close()
+                conexao_banco.close()
                 
             except mysql.connector.Error as err:
                 messagebox.showerror("Erro", f"Erro ao atualizar no banco de dados: {err}")

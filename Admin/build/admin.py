@@ -4,11 +4,11 @@ import cadastrar
 import alterar
 import excluir
 import pesquisar
-# Variáveis globais para manter referências às imagens
+
 global button_image_1, button_image_2, button_image_3, button_image_4, button_image_5
 
 OUTPUT_PATH = Path(__file__).parent
-ASSETS_PATH = OUTPUT_PATH / Path(r"C:\Users\Emanuel\Documents\GitHub\Projeto_Tkinter\Admin\build\assets_admin\frame0")
+ASSETS_PATH = OUTPUT_PATH / Path(r"C:\Users\emanuel.20524\Documents\GitHub\Projeto_Tkinter\Admin\build\assets_admin\frame0") #mude o usuario necessario
 
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
@@ -17,26 +17,26 @@ def create_admin_window(janela):
     global button_image_1, button_image_2, button_image_3, button_image_4, button_image_5
 
     def sobre():
-        messagebox.showinfo("Sobre", "Código criado e testado por Emanuel de Lacerda Gomes!")
+        messagebox.showinfo("Sobre", "Código criado e testado por Emanuel de Lacerda Gomes Com a ajuda de José Henrique Kurtz dos Santos! e a Ferramenta Tk-designer! ")
     def sair():
         var_sair = messagebox.askyesno("Sair","Tem certeza que quer encerrar o programa?")
         if var_sair == True:
             janela.destroy()
 
-    # Criar a barra de menu
+    
     barramenu = Menu(janela)
     janela.config(menu=barramenu)
 
-    # Adicionar menu "Ajuda"
+    
     menu_ajuda = Menu(barramenu, tearoff=0)
     barramenu.add_cascade(label="Sobre", menu=menu_ajuda)
     menu_ajuda.add_command(label="Programa", command=sobre)
 
     janela.geometry("1531x850")
     janela.configure(bg="#6D88FF")
-    janela.title("Gerenciamento de Imóveis - Painel Admin")
+    janela.title("Gerenciamento de Produtos - Painel Admin")
     janela.state("zoomed")
-    janela.iconbitmap(r"C:\Users\Emanuel\Documents\GitHub\Projeto_Tkinter\Admin\build\OIP.ico") # Altere se estiver usando em outro computador
+    janela.iconbitmap(r"C:\Users\emanuel.20524\Documents\GitHub\Projeto_Tkinter\Admin\build\OIP.ico") # Altere se estiver usando em outro computador
     
     def abrir_janela_cadastrar():
         cadastrar.create_cadastrar_window(Toplevel(janela))
@@ -148,7 +148,7 @@ def create_admin_window(janela):
         image=button_image_2,
         borderwidth=0,
         highlightthickness=0,
-        command=abrir_janela_cadastrar,  # Corrigido para chamar a função
+        command=abrir_janela_cadastrar, 
         relief="flat"
     )
     button_2.place(
@@ -162,7 +162,7 @@ def create_admin_window(janela):
         424.0,
         167.0,
         anchor="nw",
-        text="Cadastra um novo Imóvel",
+        text="Cadastra um novo Produto",
         fill="#000000",
         font=("Itim Regular", 36 * -1)
     )
@@ -171,7 +171,7 @@ def create_admin_window(janela):
         409.0,
         306.0,
         anchor="nw",
-        text="Altera um Imóvel podendo-se alterar suas informações e/ou sua disponibilidade",
+        text="Altera um Produto podendo-se alterar suas informações e/ou seu Estoque ",
         fill="#000000",
         font=("Itim Regular", 32 * -1)
     )
@@ -195,7 +195,7 @@ def create_admin_window(janela):
         421.0,
         619.0,
         anchor="nw",
-        text="Pesquisa um Imóvel mostrando suas informações e disponibilidade",
+        text="Pesquisa um Produto mostrando suas informações e Estoque",
         fill="#000000",
         font=("Itim Regular", 32 * -1)
     )
@@ -204,7 +204,7 @@ def create_admin_window(janela):
         432.0,
         465.0,
         anchor="nw",
-        text="Exclui um Imóvel",
+        text="Exclui um Produto",
         fill="#000000",
         font=("Itim Regular", 36 * -1)
     )

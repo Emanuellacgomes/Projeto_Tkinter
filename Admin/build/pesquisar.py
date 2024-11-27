@@ -3,7 +3,7 @@ from tkinter import Tk, Canvas, Entry, Button, PhotoImage, messagebox
 import mysql.connector
 
 OUTPUT_PATH = Path(__file__).parent
-ASSETS_PATH = OUTPUT_PATH / Path(r"C:\Users\Emanuel\Documents\GitHub\Projeto_Tkinter\Admin\build\assets_pesquisar\frame0")
+ASSETS_PATH = OUTPUT_PATH / Path(r"C:\Users\emanuel.20524\Documents\GitHub\Projeto_Tkinter\Admin\build\assets_pesquisar\frame0") #mude o usuario necessario
 
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
@@ -11,7 +11,7 @@ def relative_to_assets(path: str) -> Path:
 def create_pesquisar_window(window):
     window.geometry("1542x850")
     window.configure(bg = "#FFFFFF")
-    window.title("Gerenciamento de Imóveis - Pesquisar")
+    window.title("Gerenciamento de Produtos - Pesquisar")
     window.state("zoomed")
 
     canvas = Canvas(
@@ -254,15 +254,15 @@ def create_pesquisar_window(window):
     def search_db(id_value):
         if id_value:
             try:
-                db_connection = mysql.connector.connect(
-                    host="127.0.0.1",
+                conexao_banco = mysql.connector.connect(
+                    host="localhost",
                     user="root",
-                    password="nova_senha",  # Substitua por sua senha real
+                    password="",
                     database="imobiliaria"
                 )
-                cursor = db_connection.cursor()
+                cursor = conexao_banco.cursor()
 
-                select_query = "SELECT * FROM dados WHERE ID = %s"
+                select_query = "SELECT * FROM dados WHERE id = %s"
                 cursor.execute(select_query, (id_value,))
                 result = cursor.fetchone()
 
@@ -285,7 +285,7 @@ def create_pesquisar_window(window):
                     messagebox.showwarning("Atenção", "ID não encontrado no banco de dados.")
 
                 cursor.close()
-                db_connection.close()
+                conexao_banco.close()
                 
             except mysql.connector.Error as err:
                 messagebox.showerror("Erro", f"Erro ao buscar no banco de dados: {err}")

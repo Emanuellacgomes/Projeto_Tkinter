@@ -3,7 +3,7 @@ from tkinter import Canvas, Text, Button, PhotoImage, Toplevel, StringVar, Entry
 import mysql.connector
 
 OUTPUT_PATH = Path(__file__).parent
-ASSETS_PATH = OUTPUT_PATH / Path(r"C:\Users\Emanuel\Documents\GitHub\Projeto_Tkinter\Admin\build\assets_cadastrar\frame0")
+ASSETS_PATH = OUTPUT_PATH / Path(r"C:\Users\emanuel.20524\Documents\GitHub\Projeto_Tkinter\Admin\build\assets_cadastrar\frame0") #mude o usuario necessario
 global button_image_1, button_image_2, button_image_3, button_image_4
 
 def relative_to_assets(path: str) -> Path:
@@ -14,8 +14,8 @@ def create_cadastrar_window(window):
     window.geometry("1542x850")
     window.configure(bg = "#FFFFFF")
     window.state("zoomed")
-    window.title("Gerenciamento de Imóveis - Cadastrar")
-    window.iconbitmap(r"C:\Users\Emanuel\Documents\GitHub\Projeto_Tkinter\Admin\build\OIP.ico")
+    window.title("Gerenciamento de Produtos - Cadastrar")
+    window.iconbitmap(r"C:\Users\emanuel.20524\Documents\GitHub\Projeto_Tkinter\Admin\build\OIP.ico") #mude o usuario necessario
 
     caminho_button_1 = relative_to_assets("button_1.png")
     caminho_button_2 = relative_to_assets("button_2.png")
@@ -154,7 +154,7 @@ def create_cadastrar_window(window):
         171.0,
         355.0,
         anchor="nw",
-        text="Nome do Imóvel:\n",
+        text="Nome do Produto:\n",
         fill="#000000",
         font=("Itim Regular", 31 * -1)
     )
@@ -203,20 +203,20 @@ def create_cadastrar_window(window):
         
         if id_value and nome_imovel and estoque:
             try:
-                db_connection = mysql.connector.connect(
-                    host="127.0.0.1",
+                conexao_banco = mysql.connector.connect(
+                    host="localhost",
                     user="root",
-                    password="nova_senha",
+                    password="",
                     database="imobiliaria"
                 )
-                cursor = db_connection.cursor()
+                cursor = conexao_banco.cursor()
 
                 insert_query = "INSERT INTO dados (id, nome, estoque) VALUES (%s, %s, %s)"
                 cursor.execute(insert_query, (id_value, nome_imovel, estoque))
 
-                db_connection.commit()
+                conexao_banco.commit()
                 cursor.close()
-                db_connection.close()
+                conexao_banco.close()
 
                 messagebox.showinfo("Sucesso", "Dados cadastrados com sucesso!")
             except mysql.connector.Error as err:

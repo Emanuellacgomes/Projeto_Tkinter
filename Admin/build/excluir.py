@@ -3,7 +3,7 @@ from tkinter import Tk, Canvas, Entry, Button, PhotoImage, messagebox
 import mysql.connector
 
 OUTPUT_PATH = Path(__file__).parent
-ASSETS_PATH = OUTPUT_PATH / Path(r"C:\Users\Emanuel\Documents\GitHub\Projeto_Tkinter\Admin\build\assets_excluir\frame0")
+ASSETS_PATH = OUTPUT_PATH / Path(r"C:\Users\emanuel.20524\Documents\GitHub\Projeto_Tkinter\Admin\build\assets_excluir\frame0") #mude o usuario necessario
 
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
@@ -15,7 +15,11 @@ def create_excluir_window(window):
     window.geometry("1542x850")
     window.configure(bg = "#FFFFFF")
     window.state("zoomed")
-    window.title("Gerenciamento de Imóveis - Excluir")
+    window.title("Gerenciamento de Produtos - Excluir")
+    def excluir():
+        var_excluir = messagebox.askyesno("Atenção!","Tem certeza que quer excluir o Produto?")
+        if var_excluir == True:
+            delete_from_db()
     canvas = Canvas(
         window,
         bg = "#FFFFFF",
@@ -110,20 +114,20 @@ def create_excluir_window(window):
         if id_value:
             try:
                 db_connection = mysql.connector.connect(
-                    host="127.0.0.1",
+                    host="localhost",
                     user="root",
-                    password="nova_senha",  # Substitua por sua senha real
+                    password="",
                     database="imobiliaria"
                 )
                 cursor = db_connection.cursor()
 
-                # Verifique se o ID existe
+                # Verifica se o ID existe
                 select_query = "SELECT * FROM dados WHERE id = %s"
                 cursor.execute(select_query, (id_value,))
                 result = cursor.fetchone()
 
                 if result:
-                    # Se o ID existir, exclua o registro
+                    # Se o ID existir, exclua os dados
                     delete_query = "DELETE FROM dados WHERE id = %s"
                     cursor.execute(delete_query, (id_value,))
                     db_connection.commit()
@@ -146,7 +150,7 @@ def create_excluir_window(window):
         image=button_image_1,
         borderwidth=0,
         highlightthickness=0,
-        command=delete_from_db,
+        command=excluir,#por alguma razão a janela excluir fecha ao apertar o botão
         relief="flat"
     )
     button_1.place(
